@@ -1,0 +1,18 @@
+Lastname Firstname MemberID YearOfBirth BooksBorrowed
+------------------------------------------------------
+Smith A 20211221 1995 3
+Johnson D 20201236 2000 1
+Brown F 20193476 2002 2
+Davis G 20211122 1998 4
+Lee J 20182456 1985 6
+Taylor M 20203456 1989 0
+Wilson K 20191234 2001 3
+Anderson L 20203451 1997 5
+Harris P 20182345 1990 2
+Martin S 20201231 1988 4
+Clark J 20213467 2003 1
+Wright T 20221234 1980 7
+Miller L 20223456 1992 8
+Lewis R 20183456 1993 2
+Walker S 20174563 1996 3
+
