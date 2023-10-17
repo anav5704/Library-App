@@ -52,6 +52,7 @@ int main()
     int memberID[CAPACITY];
     int yearOfBirth[CAPACITY];
     int booksBorrowed[CAPACITY];
+    int sortedIndecies[CAPACITY];
 
 
     ifstream readFile;
@@ -80,9 +81,9 @@ int main()
     // Minimum Element Sort by yours truly 🤓
     for (int i = 0; i < rows; i++) {
         int minElement = booksBorrowed[i];
-        int minIndex = i;
+        int minIndex = i, j;
 
-        for (int j = i; j < rows; j++) {
+        for ( j = i; j < rows; j++) {
             if (booksBorrowed[j] < minElement) {
                 minElement = booksBorrowed[j];
                 minIndex = j;
@@ -90,14 +91,21 @@ int main()
         }
         
         // Swap the smallest element with current iteration index
-        int temp = booksBorrowed[i];
+        int tempBook = booksBorrowed[i];
         booksBorrowed[i] = minElement;
-        booksBorrowed[minIndex] = temp;
+        booksBorrowed[minIndex] = tempBook;
+
+        char tempFirstNameInitial = firstNameInitial[i];
+        firstNameInitial[i] = firstNameInitial[minIndex];
+        firstNameInitial[minIndex] = tempFirstNameInitial;
+
+        string tempLastName = lastName[i];
+        lastName[i] = lastName[minIndex];
+        lastName[minIndex] = tempLastName;
     }
 
-
-    for (int i = 0; i < rows - 1; i++) cout << booksBorrowed[i] << " | ";
-
+    cout << "Sorted table?" << endl;
+    for (int i = 0; i < rows; i++) cout << left << setw(10) << lastName[i] << " |\t " << firstNameInitial[i] << " \t|\t " << booksBorrowed[i] << endl;
     system("PAUSE");
     return 0;
 }
