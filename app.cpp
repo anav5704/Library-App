@@ -75,12 +75,28 @@ int main()
         }
     }
 
-    for (int i = 0; i < rows; i++) cout << lastName[i] << " | ";
-    for (int i = 0; i < rows; i++) cout << firstNameInitial[i] << " | ";
-    for (int i = 0; i < rows; i++) cout << memberID[i] << " | ";
-    for (int i = 0; i < rows; i++) cout << yearOfBirth[i] << " | ";
-    for (int i = 0; i < rows; i++) cout << booksBorrowed[i] << " | ";
-    for (int i = 0; i < rows; i++) cout << membershipStatus[i] << " | ";
+    for (int i = 0; i < rows; i++) cout << lastName[i] << " | " << firstNameInitial[i] << " | " << memberID[i] << " | " << yearOfBirth[i] << " | " << booksBorrowed[i] << " | " << membershipStatus[i] << " | " << endl;
+
+    // Minimum Element Sort by yours truly 🤓
+    for (int i = 0; i < rows; i++) {
+        int minElement = booksBorrowed[i];
+        int minIndex = i;
+
+        for (int j = i; j < rows; j++) {
+            if (booksBorrowed[j] < minElement) {
+                minElement = booksBorrowed[j];
+                minIndex = j;
+            }
+        }
+        
+        // Swap the smallest element with current iteration index
+        int temp = booksBorrowed[i];
+        booksBorrowed[i] = minElement;
+        booksBorrowed[minIndex] = temp;
+    }
+
+
+    for (int i = 0; i < rows - 1; i++) cout << booksBorrowed[i] << " | ";
 
     system("PAUSE");
     return 0;
