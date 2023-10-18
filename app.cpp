@@ -22,17 +22,21 @@
 // - Produce a file called LibraryReports.txt (in the current directory), with details including Last name, First name Initial, Member ID, Age, Books Borrowed, and Membership Status.
 // - Exit the program
 
-// A function to read the contents of the file and populate the respective arrays.
+// A function to read the contents of the file and populate the respective arrays ✅
 // A function that will print books borrowed in ascending order.
 // A function to calculate age.
-// A function to calculate the corresponding membership status as per books borrowed
+// A function to calculate the corresponding membership status as per books borrowed ✅
 
 #include<iostream>
 #include<fstream>
 #include<iomanip>
 using namespace std;
 
+// Prototypes
+
+void appStartQuit(bool& continue_running);
 void assignMembershipStatus(string& membershipStatus, int booksBorrowed);
+void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
 
 int main()
 {
@@ -42,7 +46,6 @@ int main()
 
     // Variable declerations
     int rows = 0;
-    string headerOmit;
 
 
     // Arrays for storing member data
@@ -52,62 +55,116 @@ int main()
     int memberID[CAPACITY];
     int yearOfBirth[CAPACITY];
     int booksBorrowed[CAPACITY];
-    int sortedIndecies[CAPACITY];
+    bool continue_running;
+
+    cout << "+----------------------------------------------+\n"
+         << "|          Welcome to the Library app!         |\n"
+         << "+----------------------------------------------+\n\n";
+
+    appStartQuit(continue_running);
+
+     while (continue_running){
+        rows = 0;
+        populateArrays("LibraryMembers.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
+
+        for (int i = 0; i < rows; i++) cout << lastName[i] << " | " << firstNameInitial[i] << " | " << memberID[i] << " | " << yearOfBirth[i] << " | " << booksBorrowed[i] << " | " << membershipStatus[i] << " | " << endl;
+
+        // Minimum Element Sort by yours truly 🤓
+        for (int i = 0; i < rows; i++) {
+            int minElement = booksBorrowed[i];
+            int minIndex = i;
+
+            for ( int j = i; j < rows; j++) {
+                if (booksBorrowed[j] < minElement) {
+                    minElement = booksBorrowed[j];
+                    minIndex = j;
+                }
+            }
+            
+            // Swap the smallest element with current iteration index
+            int tempBook = booksBorrowed[i];
+            booksBorrowed[i] = minElement;
+            booksBorrowed[minIndex] = tempBook;
+
+            char tempFirstNameInitial = firstNameInitial[i];
+            firstNameInitial[i] = firstNameInitial[minIndex];
+            firstNameInitial[minIndex] = tempFirstNameInitial;
+
+            string tempLastName = lastName[i];
+            lastName[i] = lastName[minIndex];
+            lastName[minIndex] = tempLastName;
+
+        }
+
+        cout << "Sorted table?" << endl;
+        for (int i = 0; i < rows; i++) cout << left << setw(10) << lastName[i] << " |\t " << firstNameInitial[i] << " \t|\t " << booksBorrowed[i] << endl;
+
+        appStartQuit(continue_running);
+     }
+
+    cout << endl
+        << "+-------------------------------------------------------+" << endl
+        << "|           Thank you for using the Library app!        |" << endl
+        << "+-------------------------------------------------------+" << endl << endl
+        << "Exiting..." << endl;
+
+    system("PAUSE");
+    return 0;
+}
 
 
-    ifstream readFile;
-    readFile.open("LibraryMembers.txt");
+// Funtions
+
+void appStartQuit(bool& continue_running){
+    char decision;
+
+    cout << "Enter S to start or Q to exit: ";
+    cin >> decision;
+
+    while (tolower(decision) != 's' && tolower(decision) != 'q'){
+        cin.clear();
+        string dummy;
+        getline(cin, dummy);
+        cout << endl
+             << "Oops, something went wrong." << endl
+             << "Enter either \"S\" or \"Q\": ";
+        cin >> decision;
+    }
+
+    switch (tolower(decision)){
+        case 's':
+            continue_running = true;
+            break;
+        case 'q':
+            continue_running = false;
+            break;
+    }
+}
+
+
+void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
+    string headerOmit;
+
+    fstream readFile;
+    readFile.open(fileName);
 
     // Fallback if input file is not found
     if(!readFile) {
         cout << "Oops! an error occured: could not find input file." << endl;
-        return 0;
     }
 
     else {
         getline(readFile, headerOmit); // Omit table header from input file
         getline(readFile, headerOmit); // Omit dashed line from input file
 
-        // Read contents from file
-        while(!readFile.eof()) {
-            readFile >> lastName[rows] >> firstNameInitial[rows] >> memberID[rows] >> yearOfBirth[rows] >> booksBorrowed[rows];
-            assignMembershipStatus(membershipStatus[rows], booksBorrowed[rows]);
-            rows++;
-        }
+    // Read contents from file
+    while (readFile >> lastName[rows] >> firstNameInitial[rows] >> memberID[rows] >> yearOfBirth[rows] >> booksBorrowed[rows]) {
+        assignMembershipStatus(membershipStatus[rows], booksBorrowed[rows]);
+        rows++;
     }
 
-    for (int i = 0; i < rows; i++) cout << lastName[i] << " | " << firstNameInitial[i] << " | " << memberID[i] << " | " << yearOfBirth[i] << " | " << booksBorrowed[i] << " | " << membershipStatus[i] << " | " << endl;
-
-    // Minimum Element Sort by yours truly 🤓
-    for (int i = 0; i < rows; i++) {
-        int minElement = booksBorrowed[i];
-        int minIndex = i, j;
-
-        for ( j = i; j < rows; j++) {
-            if (booksBorrowed[j] < minElement) {
-                minElement = booksBorrowed[j];
-                minIndex = j;
-            }
-        }
-        
-        // Swap the smallest element with current iteration index
-        int tempBook = booksBorrowed[i];
-        booksBorrowed[i] = minElement;
-        booksBorrowed[minIndex] = tempBook;
-
-        char tempFirstNameInitial = firstNameInitial[i];
-        firstNameInitial[i] = firstNameInitial[minIndex];
-        firstNameInitial[minIndex] = tempFirstNameInitial;
-
-        string tempLastName = lastName[i];
-        lastName[i] = lastName[minIndex];
-        lastName[minIndex] = tempLastName;
+    readFile.close();
     }
-
-    cout << "Sorted table?" << endl;
-    for (int i = 0; i < rows; i++) cout << left << setw(10) << lastName[i] << " |\t " << firstNameInitial[i] << " \t|\t " << booksBorrowed[i] << endl;
-    system("PAUSE");
-    return 0;
 }
 
 void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {
