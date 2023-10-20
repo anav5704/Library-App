@@ -37,6 +37,14 @@ using namespace std;
 void appStartQuit(bool& continue_running);
 void assignMembershipStatus(string& membershipStatus, int booksBorrowed);
 void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
+int validateInt();
+void funtionForMenuOptionOne();
+void funtionForMenuOptionTwo();
+void funtionForMenuOptionThree();
+void funtionForMenuOptionFour();
+void funtionForMenuOptionFive();
+void funtionForMenuOptionSix();
+void funtionForMenuOptionSeven();
 
 int main()
 {
@@ -46,6 +54,7 @@ int main()
 
     // Variable declerations
     int rows = 0;
+    int menuOption;
 
 
     // Arrays for storing member data
@@ -65,6 +74,45 @@ int main()
 
      while (continue_running){
         rows = 0;
+
+        cout << "Please select an option: " << endl
+             << "1. Display all library members" << endl
+             << "2. Display sorted book list" << endl
+             << "3. Display members born in speicfic year" << endl
+             << "4. Display members by number of books" << endl
+             << "5. Display membership status" << endl
+             << "6. Print report" << endl
+             << "7. Exit program" << endl;
+
+        menuOption = validateInt();
+
+        switch (menuOption)
+        {
+        case 1:
+            funtionForMenuOptionOne();
+            break;
+        case 2:
+            funtionForMenuOptionTwo();
+            break;
+        case 3:
+            funtionForMenuOptionThree();
+            break;
+        case 4:
+            funtionForMenuOptionFour();
+            break;
+        case 5:
+            funtionForMenuOptionFive();
+            break;
+        case 6:
+            funtionForMenuOptionSix();
+            break;
+        case 7:
+            funtionForMenuOptionSeven();
+            break;
+
+        // No default is needed as input is already validated
+        }
+
         populateArrays("LibraryMembers.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
 
         for (int i = 0; i < rows; i++) cout << lastName[i] << " | " << firstNameInitial[i] << " | " << memberID[i] << " | " << yearOfBirth[i] << " | " << booksBorrowed[i] << " | " << membershipStatus[i] << " | " << endl;
@@ -138,6 +186,8 @@ void appStartQuit(bool& continue_running){
         case 'q':
             continue_running = false;
             break;
+
+        // No default is needed as input is already validated
     }
 }
 
@@ -180,5 +230,43 @@ void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {
         membershipStatus  = "Super Borrower";
     }
 }
+
+int validateInt(){
+    int input;
+    cin >> input;
+    // ⚠️⚠️⚠️ ALL YOU DANVIL ⚠️⚠️⚠️
+    // Just make a while loop to validate id its a number and in the rnage of 1-7
+    return input;
+}
+
+void funtionForMenuOptionOne(){
+    cout << "Function for option 1 has ran" << endl;
+}
+
+void funtionForMenuOptionTwo(){
+    cout << "Function for option 2 has ran" << endl;
+}
+
+void funtionForMenuOptionThree(){
+    cout << "Function for option 3 has ran" << endl;
+}
+
+void funtionForMenuOptionFour(){
+    cout << "Function for option 4 has ran" << endl;
+}
+
+void funtionForMenuOptionFive(){
+    cout << "Function for option 5 has ran" << endl;
+}
+
+void funtionForMenuOptionSix(){
+    cout << "Function for option 6 has ran" << endl;
+}
+
+void funtionForMenuOptionSeven(){
+    cout << "Function for option 7 has ran" << endl;
+}
+
+
 
 // This serves as a test in PR.
