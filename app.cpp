@@ -14,18 +14,17 @@
 // Read file and store in arrays
 // Main functionalities:
 
-// - Print the entire list of library members.
-// - Print the list sorted by the number of books borrowed.
-// - Print the list of members born in a specific year.
-// - Print the list of members who have borrowed more than a given number of books.
-// - Calculate and display the corresponding membership status (according to Books Borrowed) as provided in Table A.
-// - Produce a file called LibraryReports.txt (in the current directory), with details including Last name, First name Initial, Member ID, Age, Books Borrowed, and Membership Status.
-// - Exit the program
-
-// A function to read the contents of the file and populate the respective arrays ✅
-// A function that will print books borrowed in ascending order.
-// A function to calculate age.
-// A function to calculate the corresponding membership status as per books borrowed ✅
+// - ✅ Print the entire list of library members.  
+// - ✅ Print the list sorted by the number of books borrowed.  
+// - ⭕ Print the list of members born in a specific year.
+// - ⭕ Print the list of members who have borrowed more than a given number of books.
+// - ⭕ Calculate and display the corresponding membership status (according to Books Borrowed) as provided in Table A.
+// - ⭕ Produce a file called LibraryReports.txt (in the current directory), with details including Last name, First name Initial, Member ID, Age, Books Borrowed, and Membership Status.
+// - ✅ Exit the program  
+// - ✅ function to read the contents of the file and populate the respective arrays  
+// - ✅ function that will print books borrowed in ascending order. 
+// - ⭕ function to calculate age.
+// - ✅ function to calculate the corresponding membership status as per books borrowed  
 
 #include<iostream>
 #include<fstream>
@@ -38,8 +37,8 @@ void appStartQuit(bool& continue_running);
 void assignMembershipStatus(string& membershipStatus, int booksBorrowed);
 void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
 int validateInt();
-void funtionForMenuOptionOne();
-void funtionForMenuOptionTwo();
+void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
+void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]);
 void funtionForMenuOptionThree();
 void funtionForMenuOptionFour();
 void funtionForMenuOptionFive();
@@ -74,8 +73,10 @@ int main()
 
      while (continue_running){
         rows = 0;
+        populateArrays("LibraryMembers.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
 
-        cout << "Please select an option: " << endl
+        cout << endl
+            << "Please select an option: " << endl
              << "1. Display all library members" << endl
              << "2. Display sorted book list" << endl
              << "3. Display members born in speicfic year" << endl
@@ -89,10 +90,10 @@ int main()
         switch (menuOption)
         {
         case 1:
-            funtionForMenuOptionOne();
+            printContent(rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
             break;
         case 2:
-            funtionForMenuOptionTwo();
+            printSortedContent( rows, booksBorrowed, lastName, firstNameInitial);
             break;
         case 3:
             funtionForMenuOptionThree();
@@ -113,40 +114,6 @@ int main()
         // No default is needed as input is already validated
         }
 
-        populateArrays("LibraryMembers.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
-
-        for (int i = 0; i < rows; i++) cout << lastName[i] << " | " << firstNameInitial[i] << " | " << memberID[i] << " | " << yearOfBirth[i] << " | " << booksBorrowed[i] << " | " << membershipStatus[i] << " | " << endl;
-
-        // Minimum Element Sort by yours truly 🤓
-        for (int i = 0; i < rows; i++) {
-            int minElement = booksBorrowed[i];
-            int minIndex = i;
-
-            for ( int j = i; j < rows; j++) {
-                if (booksBorrowed[j] < minElement) {
-                    minElement = booksBorrowed[j];
-                    minIndex = j;
-                }
-            }
-            
-            // Swap the smallest element with current iteration index
-            int tempBook = booksBorrowed[i];
-            booksBorrowed[i] = minElement;
-            booksBorrowed[minIndex] = tempBook;
-
-            char tempFirstNameInitial = firstNameInitial[i];
-            firstNameInitial[i] = firstNameInitial[minIndex];
-            firstNameInitial[minIndex] = tempFirstNameInitial;
-
-            string tempLastName = lastName[i];
-            lastName[i] = lastName[minIndex];
-            lastName[minIndex] = tempLastName;
-
-        }
-
-        cout << "Sorted table?" << endl;
-        for (int i = 0; i < rows; i++) cout << left << setw(10) << lastName[i] << " |\t " << firstNameInitial[i] << " \t|\t " << booksBorrowed[i] << endl;
-
         appStartQuit(continue_running);
      }
 
@@ -166,7 +133,7 @@ int main()
 void appStartQuit(bool& continue_running){
     char decision;
 
-    cout << "Enter S to start or Q to exit: ";
+    cout << "\nEnter S to start or Q to exit: ";
     cin >> decision;
 
     while (tolower(decision) != 's' && tolower(decision) != 'q'){
@@ -190,7 +157,6 @@ void appStartQuit(bool& continue_running){
         // No default is needed as input is already validated
     }
 }
-
 
 void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
     string headerOmit;
@@ -239,32 +205,84 @@ int validateInt(){
     return input;
 }
 
-void funtionForMenuOptionOne(){
-    cout << "Function for option 1 has ran" << endl;
+void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
+    cout << "Entire list of library members:" << endl << endl
+        << left << setw(15) << "Name" << setw(10) 
+                            << "Initial" << setw(15) 
+                            << "ID" << setw(10) 
+                            << "Year" << setw(10)     // ⚠️⚠️⚠️ MAKE THIS "AGE" ⚠️⚠️⚠️
+                            << "Borrowed" << setw(10) 
+                            << "Status" << endl
+         << "--------------------------------------------------------------------------" << endl;
+
+    for (int i = 0; i < rows; i++) {
+        cout << left << setw(15) << lastName[i] << setw(10) 
+                                << firstNameInitial[i] << setw(15) 
+                                << memberID[i] << setw(10) 
+                                << yearOfBirth[i] << setw(10)  // ⚠️⚠️⚠️ MAKE THIS "AGE" ⚠️⚠️⚠️
+                                << booksBorrowed[i] << setw(10) 
+                                << membershipStatus[i] << endl;
+    }
 }
 
-void funtionForMenuOptionTwo(){
-    cout << "Function for option 2 has ran" << endl;
+void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]){
+    for (int i = 0; i < rows; i++) {
+        int minElement = booksBorrowed[i];
+        int minIndex = i;
+
+        for ( int j = i; j < rows; j++) {
+            if (booksBorrowed[j] < minElement) {
+                minElement = booksBorrowed[j];
+                minIndex = j;
+            }
+        }
+        
+        // Swap the smallest element with current iteration index
+        int tempBook = booksBorrowed[i];
+        booksBorrowed[i] = minElement;
+        booksBorrowed[minIndex] = tempBook;
+
+        char tempFirstNameInitial = firstNameInitial[i];
+        firstNameInitial[i] = firstNameInitial[minIndex];
+        firstNameInitial[minIndex] = tempFirstNameInitial;
+
+        string tempLastName = lastName[i];
+        lastName[i] = lastName[minIndex];
+        lastName[minIndex] = tempLastName;
+    }
+
+    cout << "Sorted list of library members:" << endl << endl
+    << left << setw(15) << "Name" << setw(10) 
+                        << "Initial" << setw(15) 
+                        << "Borrowed" << setw(10) << endl
+
+    << "---------------------------------" << endl;
+
+    for (int i = 0; i < rows; i++) {
+        cout << left << setw(15) << lastName[i] << setw(10) 
+                                 << firstNameInitial[i] << setw(15) 
+                                 << booksBorrowed[i] << setw(10) << endl;
+    }
 }
 
 void funtionForMenuOptionThree(){
-    cout << "Function for option 3 has ran" << endl;
+    cout << "Function for option 3 has run" << endl;
 }
 
 void funtionForMenuOptionFour(){
-    cout << "Function for option 4 has ran" << endl;
+    cout << "Function for option 4 has run" << endl;
 }
 
 void funtionForMenuOptionFive(){
-    cout << "Function for option 5 has ran" << endl;
+    cout << "Function for option 5 has run" << endl;
 }
 
 void funtionForMenuOptionSix(){
-    cout << "Function for option 6 has ran" << endl;
+    cout << "Function for option 6 has run" << endl;
 }
 
 void funtionForMenuOptionSeven(){
-    cout << "Function for option 7 has ran" << endl;
+    cout << "Function for option 7 has run" << endl;
 }
 
 
