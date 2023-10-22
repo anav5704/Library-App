@@ -16,9 +16,9 @@
 
 // - ✅ Print the entire list of library members.  
 // - ✅ Print the list sorted by the number of books borrowed.  
-// - ⭕ Print the list of members born in a specific year. ⚠️⚠️⚠️ DANVIL ⚠️⚠️⚠️ 
+// - ✅ Print the list of members born in a specific year. ⚠️⚠️⚠️ DANVIL ⚠️⚠️⚠️ 
 // - ⭕ Print the list of members who have borrowed more than a given number of books.
-// - ⭕ Calculate and display the corresponding membership status (according to Books Borrowed) as provided in Table A.
+// - ✅ Calculate and display the corresponding membership status (according to Books Borrowed) as provided in Table A.
 // - ⭕ Produce a file called LibraryReports.txt (in the current directory), with details including Last name, First name Initial, Member ID, Age, Books Borrowed, and Membership Status.
 // - ✅ Exit the program  
 // - ✅ function to read the contents of the file and populate the respective arrays  
@@ -39,14 +39,13 @@ void populateArrays(string fileName, int& rows, string lastName[], string member
 int validateInt();
 void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
 void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]);
-void funtionForMenuOptionThree();
+void printSpecificYearContent(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]);
 void funtionForMenuOptionFour();
 void funtionForMenuOptionFive();
 void funtionForMenuOptionSix();
-void funtionForMenuOptionSeven();
+void quitProgram(bool& continue_running);
 
-int main()
-{
+int main(){
     // Cariable initializations
     const int CAPACITY = 100;
     
@@ -63,15 +62,13 @@ int main()
     int memberID[CAPACITY];
     int yearOfBirth[CAPACITY];
     int booksBorrowed[CAPACITY];
-    bool continue_running;
+    bool continue_running = true;
 
     cout << "+----------------------------------------------+\n"
          << "|          Welcome to the Library app!         |\n"
          << "+----------------------------------------------+\n\n";
 
-    appStartQuit(continue_running);
-
-     while (continue_running){
+    while (continue_running){
         rows = 0;
         populateArrays("LibraryMembers.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
 
@@ -87,8 +84,7 @@ int main()
 
         menuOption = validateInt();
 
-        switch (menuOption)
-        {
+        switch (menuOption){
         case 1:
             printContent(rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
             break;
@@ -96,7 +92,7 @@ int main()
             printSortedContent( rows, booksBorrowed, lastName, firstNameInitial);
             break;
         case 3:
-            funtionForMenuOptionThree();
+            printSpecificYearContent(rows, lastName, firstNameInitial, memberID, yearOfBirth);
             break;
         case 4:
             funtionForMenuOptionFour();
@@ -108,20 +104,12 @@ int main()
             funtionForMenuOptionSix();
             break;
         case 7:
-            funtionForMenuOptionSeven();
+            quitProgram(continue_running);
             break;
 
         // No default is needed as input is already validated
         }
-
-        appStartQuit(continue_running);
      }
-
-    cout << endl
-        << "+-------------------------------------------------------+" << endl
-        << "|           Thank you for using the Library app!        |" << endl
-        << "+-------------------------------------------------------+" << endl << endl
-        << "Exiting..." << endl;
 
     system("PAUSE");
     return 0;
@@ -265,8 +253,33 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
     }
 }
 
-void funtionForMenuOptionThree(){
-    cout << "Function for option 3 has run" << endl;
+void printSpecificYearContent(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]){
+    int queryYear;
+      
+    cout << "Please enter the birth year to filter the users by: ";
+    queryYear = validateInt();
+    bool resultsExist = false;
+
+    cout << "Entire list of library members:" << endl << endl
+    << left << setw(15) << "Name" << setw(10) 
+                        << "Initial" << setw(15) 
+                        << "ID" << setw(10) 
+                        << "Year" << setw(10) << endl     // ⚠️⚠️⚠️ MAKE THIS "AGE" ⚠️⚠️⚠️
+    << "--------------------------------------------" << endl;
+
+    for (int i = 0; i < rows; i++) {
+        if(yearOfBirth[i] == queryYear){
+            resultsExist = true;
+            cout << left << setw(15) << lastName[i] << setw(10) 
+                                    << firstNameInitial[i] << setw(15) 
+                                    << memberID[i] << setw(10) 
+                                    << yearOfBirth[i] << setw(10) << endl; // ⚠️⚠️⚠️ MAKE THIS "AGE" ⚠️⚠️       ⚠️
+        }
+    }
+
+    if(!resultsExist) {
+        cout << "No users found that match the birth year: " << queryYear << endl;
+    }
 }
 
 void funtionForMenuOptionFour(){
@@ -281,8 +294,14 @@ void funtionForMenuOptionSix(){
     cout << "Function for option 6 has run" << endl;
 }
 
-void funtionForMenuOptionSeven(){
-    cout << "Function for option 7 has run" << endl;
+void quitProgram(bool& continue_running){
+    continue_running = false;
+
+    cout << endl
+        << "+----------------------------------------------------------+" << endl
+        << "|           Thank you for using the Library app!           |" << endl
+        << "+----------------------------------------------------------+" << endl << endl
+        << "Exiting..." << endl;
 }
 
 
