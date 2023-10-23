@@ -36,7 +36,7 @@ using namespace std;
 void appStartQuit(bool& continue_running);
 void assignMembershipStatus(string& membershipStatus, int booksBorrowed);
 void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
-int validateInt();
+int validateInt(int minimumValue, int maximumValue);
 void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
 void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]);
 void printSpecificYearContent(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]);
@@ -53,7 +53,8 @@ int main(){
     // Variable declerations
     int rows = 0;
     int menuOption;
-
+    int firstMenuOption = 1;
+    int lastMenuOption = 7;
 
     // Arrays for storing member data
     string lastName[CAPACITY];
@@ -76,13 +77,13 @@ int main(){
             << "Please select an option: " << endl
              << "1. Display all library members" << endl
              << "2. Display sorted book list" << endl
-             << "3. Display members born in speicfic year" << endl
+             << "3. Display members born in specific year" << endl
              << "4. Display members by number of books" << endl
              << "5. Display membership status" << endl
              << "6. Print report" << endl
              << "7. Exit program" << endl;
 
-        menuOption = validateInt();
+        menuOption = validateInt(firstMenuOption,lastMenuOption);
 
         switch (menuOption){
         case 1:
@@ -185,11 +186,29 @@ void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {
     }
 }
 
-int validateInt(){
+int validateInt(int minimumValue, int maximumValue){
     int input;
+    const int MINVAL = minimumValue;
+    const int MAXVAL = maximumValue;
     cin >> input;
     // ⚠️⚠️⚠️ ALL YOU DANVIL ⚠️⚠️⚠️
     // Just make a while loop to validate id its a number and in the rnage of 1-7
+    while (cin.fail() || (input < MINVAL || input > MAXVAL)){
+        if (cin.fail()){
+            cin.clear();
+            string dummy;
+            cin >> dummy;
+            cout << "Incorrect Option Entered." <<endl;
+            cout << "Please Re-Enter Option." <<endl;
+            cin >> input;
+        }
+        else if (input < MINVAL || input > MAXVAL){
+            cin.clear();
+            cout << "Option Exceeded Limit." <<endl;
+            cout << "Please Re-Enter Option." <<endl;
+            cin >> input;            
+        }
+    }
     return input;
 }
 
@@ -255,9 +274,11 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
 
 void printSpecificYearContent(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]){
     int queryYear;
-      
+    int minYear = 1970;
+    int maxYear = 2023;
+   
     cout << "Please enter the birth year to filter the users by: ";
-    queryYear = validateInt();
+    queryYear = validateInt(minYear, maxYear);
     bool resultsExist = false;
 
     cout << "Entire list of library members:" << endl << endl
@@ -306,4 +327,3 @@ void quitProgram(bool& continue_running){
 
 
 
-// This serves as a test in PR.
