@@ -36,13 +36,13 @@ using namespace std;
 void appStartQuit(bool& continue_running);
 void assignMembershipStatus(string& membershipStatus, int booksBorrowed);
 void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
-int validateInt(int minimumValue, int maximumValue);
+int validateInt(int lowerLimit, int upperLimit);
 void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
 void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]);
-void printSpecificYearContent(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]);
-void funtionForMenuOptionFour();
-void funtionForMenuOptionFive();
-void funtionForMenuOptionSix();
+void printContentByYear(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]);
+void printContentByBooksBorrowed();
+void printContentWithMembershipStatus();
+void generateReport();
 void quitProgram(bool& continue_running);
 
 int main(){
@@ -93,21 +93,20 @@ int main(){
             printSortedContent( rows, booksBorrowed, lastName, firstNameInitial);
             break;
         case 3:
-            printSpecificYearContent(rows, lastName, firstNameInitial, memberID, yearOfBirth);
+            printContentByYear(rows, lastName, firstNameInitial, memberID, yearOfBirth);
             break;
         case 4:
-            funtionForMenuOptionFour();
+            printContentByBooksBorrowed();
             break;
         case 5:
-            funtionForMenuOptionFive();
+            printContentWithMembershipStatus();
             break;
         case 6:
-            funtionForMenuOptionSix();
+            generateReport();
             break;
         case 7:
             quitProgram(continue_running);
             break;
-
         // No default is needed as input is already validated
         }
      }
@@ -142,8 +141,7 @@ void appStartQuit(bool& continue_running){
         case 'q':
             continue_running = false;
             break;
-
-        // No default is needed as input is already validated
+     // No default is needed as input is already validated
     }
 }
 
@@ -176,39 +174,36 @@ void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {
     if(booksBorrowed >= 0 && booksBorrowed <= 2) {
         membershipStatus = "Regular Member";
     }
-
     else if(booksBorrowed >= 3 && booksBorrowed <= 5) {
         membershipStatus = "Frequent Borrower";
     }
-    
     else {
         membershipStatus  = "Super Borrower";
     }
 }
 
-int validateInt(int minimumValue, int maximumValue){
+int validateInt(int lowerLimit, int upperlimit){
     int input;
-    const int MINVAL = minimumValue;
-    const int MAXVAL = maximumValue;
+
     cin >> input;
-    // ⚠️⚠️⚠️ ALL YOU DANVIL ⚠️⚠️⚠️
-    // Just make a while loop to validate id its a number and in the rnage of 1-7
-    while (cin.fail() || (input < MINVAL || input > MAXVAL)){
+
+    while (cin.fail() || (input < lowerLimit || input > upperlimit)){
         if (cin.fail()){
             cin.clear();
             string dummy;
             cin >> dummy;
-            cout << "Incorrect Option Entered." <<endl;
-            cout << "Please Re-Enter Option." <<endl;
-            cin >> input;
+            cout << "Oops! Something went wrong." <<endl;
+            cout << "Please enter a number: " <<endl;
         }
-        else if (input < MINVAL || input > MAXVAL){
+        else if (input < lowerLimit || input > upperlimit){
             cin.clear();
-            cout << "Option Exceeded Limit." <<endl;
-            cout << "Please Re-Enter Option." <<endl;
-            cin >> input;            
+            cout << "Oops! Something went wrong. " << endl; 
+            cout << "Try entering something between " << lowerLimit << " and " << upperlimit <<endl;
         }
+
+        cin >> input;            
     }
+
     return input;
 }
 
@@ -234,8 +229,7 @@ void printContent(int rows, string lastName[], string membershipStatus[], char f
 
 void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]){
     for (int i = 0; i < rows; i++) {
-        int minElement = booksBorrowed[i];
-        int minIndex = i;
+        int minElement = booksBorrowed[i], minIndex = i;
 
         for ( int j = i; j < rows; j++) {
             if (booksBorrowed[j] < minElement) {
@@ -262,7 +256,6 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
     << left << setw(15) << "Name" << setw(10) 
                         << "Initial" << setw(15) 
                         << "Borrowed" << setw(10) << endl
-
     << "---------------------------------" << endl;
 
     for (int i = 0; i < rows; i++) {
@@ -272,14 +265,12 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
     }
 }
 
-void printSpecificYearContent(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]){
-    int queryYear;
-    int minYear = 1970;
-    int maxYear = 2023;
+void printContentByYear(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]){
+    int queryYear, minYear = 1970, maxYear = 2023;
+    bool resultsExist = false;
    
     cout << "Please enter the birth year to filter the users by: ";
     queryYear = validateInt(minYear, maxYear);
-    bool resultsExist = false;
 
     cout << "Entire list of library members:" << endl << endl
     << left << setw(15) << "Name" << setw(10) 
@@ -303,15 +294,15 @@ void printSpecificYearContent(int rows, string lastName[], char firstNameInitial
     }
 }
 
-void funtionForMenuOptionFour(){
+void printContentByBooksBorrowed(){
     cout << "Function for option 4 has run" << endl;
 }
 
-void funtionForMenuOptionFive(){
+void printContentWithMembershipStatus(){
     cout << "Function for option 5 has run" << endl;
 }
 
-void funtionForMenuOptionSix(){
+void generateReport(){
     cout << "Function for option 6 has run" << endl;
 }
 
