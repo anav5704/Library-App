@@ -46,7 +46,7 @@ void generateReport();
 void quitProgram(bool& continue_running);
 
 int main(){
-    // Cariable initializations
+    // Variable initializations
     const int CAPACITY = 100;
     
 
@@ -72,7 +72,7 @@ int main(){
     while (continue_running){
         rows = 0;
         populateArrays("LibraryMembers.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
-
+        
         cout << endl
             << "Please select an option: " << endl
              << "1. Display all library members" << endl
@@ -207,25 +207,33 @@ int validateInt(int lowerLimit, int upperlimit){
     return input;
 }
 
-void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
+int calculateAge(int birthYear) {
+    const int CURRENT_YEAR = 2023; // Update the current year as needed
+    return CURRENT_YEAR - birthYear;
+}
+
+
+void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]) {
     cout << "Entire list of library members:" << endl << endl
-        << left << setw(15) << "Name" << setw(10) 
-                            << "Initial" << setw(15) 
-                            << "ID" << setw(10) 
-                            << "Year" << setw(10)     // ⚠️⚠️⚠️ MAKE THIS "AGE" ⚠️⚠️⚠️
-                            << "Borrowed" << setw(10) 
-                            << "Status" << endl
-         << "--------------------------------------------------------------------------" << endl;
+        << left << setw(15) << "Name" << setw(10)
+        << "Initial" << setw(15)
+        << "ID" << setw(10)
+        << "Age" << setw(10) // Display "Age" instead of "Year"
+        << "Borrowed" << setw(10)
+        << "Status" << endl
+        << "--------------------------------------------------------------------------" << endl;
 
     for (int i = 0; i < rows; i++) {
-        cout << left << setw(15) << lastName[i] << setw(10) 
-                                << firstNameInitial[i] << setw(15) 
-                                << memberID[i] << setw(10) 
-                                << yearOfBirth[i] << setw(10)  // ⚠️⚠️⚠️ MAKE THIS "AGE" ⚠️⚠️⚠️
-                                << booksBorrowed[i] << setw(10) 
-                                << membershipStatus[i] << endl;
+        int age = calculateAge(yearOfBirth[i]);
+        cout << left << setw(15) << lastName[i] << setw(10)
+            << firstNameInitial[i] << setw(15)
+            << memberID[i] << setw(10)
+            << age << setw(10) // Display the calculated age
+            << booksBorrowed[i] << setw(10)
+            << membershipStatus[i] << endl;
     }
 }
+
 
 void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]){
     for (int i = 0; i < rows; i++) {
