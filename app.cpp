@@ -28,8 +28,8 @@
 // - ✅ function to calculate the corresponding membership status as per books borrowed  
 
 #include<iostream>
-#include<fstream>
-#include<iomanip>
+#include<fstream> // Used to read and write to files
+#include<iomanip> // Used to format the output using setw()
 using namespace std;
 
 // Prototypes
@@ -44,8 +44,9 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
 void printContentByYear(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]);
 void printContentByBooksBorrowed();
 void printContentWithMembershipStatus();
-void generateReport();
+void generateReport(string fileName, int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
 void quitProgram(bool& continue_running);
+string generateUnderline(int length);
 
 int main(){
     // Variable initializations
@@ -74,8 +75,8 @@ int main(){
     while (continue_running){
         rows = 0;
         populateArrays("LibraryMembers.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
-        
-        cout << endl
+ 
+         cout << endl
             << "Please select an option: " << endl
              << "1. Display all library members" << endl
              << "2. Display sorted book list" << endl
@@ -104,7 +105,7 @@ int main(){
             printContentWithMembershipStatus();
             break;
         case 6:
-            generateReport();
+            generateReport("LibraryMembersTest.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
             break;
         case 7:
             quitProgram(continue_running);
@@ -162,13 +163,13 @@ void populateArrays(string fileName, int& rows, string lastName[], string member
         getline(readFile, headerOmit); // Omit table header from input file
         getline(readFile, headerOmit); // Omit dashed line from input file
 
-    // Read contents from file
-    while (readFile >> lastName[rows] >> firstNameInitial[rows] >> memberID[rows] >> yearOfBirth[rows] >> booksBorrowed[rows]) {
-        assignMembershipStatus(membershipStatus[rows], booksBorrowed[rows]);
-        rows++;
-    }
+        // Read contents from file
+        while (readFile >> lastName[rows] >> firstNameInitial[rows] >> memberID[rows] >> yearOfBirth[rows] >> booksBorrowed[rows]) {
+            assignMembershipStatus(membershipStatus[rows], booksBorrowed[rows]);
+            rows++;
+        }
 
-    readFile.close();
+        readFile.close();
     }
 }
 
@@ -313,28 +314,37 @@ void printContentWithMembershipStatus(){
     cout << "Function for option 5 has run" << endl;
 }
 
-void generateReport(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
-    string headerOmit;
+void generateReport(string fileName, int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
 
     ofstream writeFile;
     writeFile.open(fileName);
 
-    // Fallback if input file is not found
+    // Fallback if output file is not found
     if(!writeFile) {
         cout << "Oops! an error occured: could not find input file." << endl;
     }
 
     else {
-        getline(readFile, headerOmit); // Omit table header from input file
-        getline(readFile, headerOmit); // Omit dashed line from input file
+        writeFile << left << setw(15) << "LastName" << setw(15)
+                  << "FirstName" << setw(15)
+                  << "MemberID" << setw(15)
+                  << "YearOfBirth" << setw(20) 
+                  << "BooksBorrowed" << setw(15)
+                  << "MmbershipStatus" << endl
+                 << generateUnderline(95) << endl;
 
-    // Read contents from file
-    while (writeFile << lastName[rows] << firstNameInitial[rows] << memberID[rows] << yearOfBirth[rows] << booksBorrowed[rows]) {
-        assignMembershipStatus(membershipStatus[rows], booksBorrowed[rows]);
-        rows++;
-    }
+        // Write contents to  file
+        for(int i = 0; i < rows; i++){
+            writeFile  << left << setw(15) << lastName[i] << setw(15)
+                       << firstNameInitial[i] << setw(15)
+                       << memberID[i] << setw(15)
+                       << yearOfBirth[i] << setw(20) 
+                       << booksBorrowed[i] << setw(15) 
+                       << membershipStatus[i] << endl;
+        }
 
-    readFile.close();
+        cout << "The report was succesfully generated.";
+        writeFile.close();
     }
 }
 
@@ -347,6 +357,17 @@ void quitProgram(bool& continue_running){
         << "|           Thank you for using the Library app!           |" << endl
         << "+----------------------------------------------------------+" << endl << endl
         << "Exiting..." << endl;
+}
+
+string generateUnderline(int length){
+    // Helper function used to generate a dashed outline of specific length
+    string underline;
+
+    for(int i = 0; i < length; i++) {
+        underline += "-";
+    }
+
+    return underline;
 }
 
 
