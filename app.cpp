@@ -224,7 +224,7 @@ void printContent(int rows, string lastName[], string membershipStatus[], char f
         << "Age" << setw(10) 
         << "Borrowed" << setw(10)
         << "Status" << endl
-        << "--------------------------------------------------------------------------" << endl;
+        << generateUnderline(81) << endl;
 
     for (int i = 0; i < rows; i++) {
         int age = calculateAge(yearOfBirth[i]);
@@ -266,8 +266,8 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
     cout << "Sorted list of library members:" << endl << endl
     << left << setw(15) << "Name" << setw(10) 
                         << "Initial" << setw(15) 
-                        << "Borrowed" << setw(10) << endl
-    << "---------------------------------" << endl;
+                        << "Borrowed" << endl
+                        << generateUnderline(33) << endl;
 
     for (int i = 0; i < rows; i++) {
         cout << left << setw(15) << lastName[i] << setw(10) 
@@ -287,8 +287,8 @@ void printContentByYear(int rows, string lastName[], char firstNameInitial[], in
     << left << setw(15) << "Name" << setw(10) 
                         << "Initial" << setw(15) 
                         << "ID" << setw(10) 
-                        << "Age" << setw(10) << endl     
-    << "--------------------------------------------" << endl;
+                        << "Age" << endl     
+                        << generateUnderline(43) << endl;
 
     for (int i = 0; i < rows; i++) {
         int age = calculateAge(yearOfBirth[i]);
