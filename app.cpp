@@ -305,8 +305,35 @@ void printContentByYear(int rows, string lastName[], char firstNameInitial[], in
     }
 }
 
-void printContentByBooksBorrowed(){
-    cout << "Function for option 4 has run" << endl;
+void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
+    int queryBorrowed;
+    int minBorrowed = 1;
+    int maxBorrowed = 10;
+    bool results = false;
+    
+    cout << "Please enter the minimum number of borrowed books to filter the users by: ";
+    queryBorrowed = validateInt(minBorrowed, maxBorrowed);
+
+    cout << "Entire list of library members:" << endl << endl
+    << left << setw(15) << "Name" << setw(10) 
+                        << "Initial" << setw(15) 
+                        << "ID" << setw(10) 
+                        << "Age" << setw(10) << endl     
+    << "--------------------------------------------" << endl;
+
+    for (int i = 0; i < rows; i++) {
+        int age = calculateAge(yearOfBirth[i]);
+        if (booksBorrowed [] > queryBorrowed){
+            results = true;
+            cout << left << setw(15) << lastName[i] << setw(10) 
+                                    << firstNameInitial[i] << setw(15) 
+                                    << memberID[i] << setw(10) 
+                                    << age << setw(10) << endl;
+                                    << booksBorrowed[i] << setw(10) << endl;
+             
+        }
+
+
 }
 
 void printContentWithMembershipStatus(){
