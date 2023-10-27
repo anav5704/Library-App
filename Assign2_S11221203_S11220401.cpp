@@ -1,5 +1,3 @@
-// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ TODO: Rename file to Assign2_S11221203_SXXXXXXXX.cpp ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
-
 // ---------------------------------------------------------------------------------------------------------- //
 // Project:            Assignment 2, Semester 2, 2023                                                         //
 // Developers:         Anav Chand, Danvil Singh                                                               //
@@ -12,27 +10,14 @@
 // ---------------------------------------------------------------------------------------------------------- //
 
 
-// Read file and store in arrays
-// Main functionalities:
-
-// - ✅ Print the entire list of library members.  
-// - ✅ Print the list sorted by the number of books borrowed.  
-// - ✅ Print the list of members born in a specific year. ⚠️⚠️⚠️ DANVIL ⚠️⚠️⚠️ 
-// - ⭕ Print the list of members who have borrowed more than a given number of books.
-// - ✅ Calculate and display the corresponding membership status (according to Books Borrowed) as provided in Table A.
-// - ⭕ Produce a file called LibraryReports.txt (in the current directory), with details including Last name, First name Initial, Member ID, Age, Books Borrowed, and Membership Status.
-// - ✅ Exit the program  
-// - ✅ function to read the contents of the file and populate the respective arrays  
-// - ✅ function that will print books borrowed in ascending order. 
-// - ✅ function to calculate age.
-// - ✅ function to calculate the corresponding membership status as per books borrowed  
-
 #include<iostream>
 #include<fstream> // Used to read and write to files
 #include<iomanip> // Used to format the output using setw()
 using namespace std;
 
-// Prototypes
+
+//------------------------------------------------ Prototypes ------------------------------------------------//
+
 
 void appStartQuit(bool& continue_running);
 void assignMembershipStatus(string& membershipStatus, int booksBorrowed);
@@ -49,7 +34,7 @@ void quitProgram(bool& continue_running);
 string generateUnderline(int length);
 
 int main(){
-    // Variable initializations
+    // Constant initializations
     const int CAPACITY = 100;
     
 
@@ -58,6 +43,7 @@ int main(){
     int menuOption;
     int firstMenuOption = 1;
     int lastMenuOption = 7;
+    
 
     // Arrays for storing member data
     string lastName[CAPACITY];
@@ -68,23 +54,27 @@ int main(){
     int booksBorrowed[CAPACITY];
     bool continue_running = true;
 
-    cout << "+----------------------------------------------+\n"
-         << "|          Welcome to the Library app!         |\n"
-         << "+----------------------------------------------+\n\n";
+
+//---------------------------------------------- App Starts Here ----------------------------------------------//
+
+
+cout << "+----------------------------------------------+\n"
+     << "|          Welcome to the Library app!         |\n"
+     << "+----------------------------------------------+\n";
 
     while (continue_running){
         rows = 0;
         populateArrays("LibraryMembers.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
  
          cout << endl
-            << "Please select an option: " << endl
              << "1. Display all library members" << endl
              << "2. Display sorted book list" << endl
              << "3. Display members born in specific year" << endl
              << "4. Display members by number of books" << endl
              << "5. Display membership status" << endl
              << "6. Print report" << endl
-             << "7. Exit program" << endl;
+             << "7. Exit program" << endl
+             << "Please select an option: ";
 
         menuOption = validateInt(firstMenuOption,lastMenuOption);
 
@@ -119,7 +109,8 @@ int main(){
 }
 
 
-// Funtions
+//------------------------------------------------- Funtions -------------------------------------------------//
+
 
 void appStartQuit(bool& continue_running){
     char decision;
@@ -148,6 +139,7 @@ void appStartQuit(bool& continue_running){
     }
 }
 
+
 void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
     string headerOmit;
 
@@ -173,6 +165,7 @@ void populateArrays(string fileName, int& rows, string lastName[], string member
     }
 }
 
+
 void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {
     if(booksBorrowed >= 0 && booksBorrowed <= 2) {
         membershipStatus = "Regular Member";
@@ -184,6 +177,7 @@ void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {
         membershipStatus  = "Super Borrower";
     }
 }
+
 
 int validateInt(int lowerLimit, int upperlimit){
     int input;
@@ -209,6 +203,7 @@ int validateInt(int lowerLimit, int upperlimit){
 
     return input;
 }
+
 
 int calculateAge(int birthYear) {
     const int CURRENT_YEAR = 2023; 
@@ -276,6 +271,7 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
     }
 }
 
+
 void printContentByYear(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]){
     int queryYear, minYear = 1970, maxYear = 2023;
     bool resultsExist = false;
@@ -306,15 +302,13 @@ void printContentByYear(int rows, string lastName[], char firstNameInitial[], in
     }
 }
 
+
 void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[], string membershipStatus[]){
-    int queryBorrowed;
-    int minBorrowed = 1;
-    int maxBorrowed = 10;
-    bool results = false;
+    int queryBorrowed, minBorrowed = 1, maxBorrowed = 10;
+    bool resultsExist = false;
     
     cout << "Please enter the minimum number of borrowed books to filter the users by: ";
     queryBorrowed = validateInt(minBorrowed, maxBorrowed);
-
 
     cout << "Entire list of library members:" << endl << endl
          << left << setw(15) << "Name" << setw(10) 
@@ -329,7 +323,7 @@ void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInit
         int age = calculateAge(yearOfBirth[i]);
         assignMembershipStatus(membershipStatus[i], booksBorrowed[i]);
         if (booksBorrowed [i] > queryBorrowed){
-            results = true;
+            resultsExist = true;
 
             cout << left << setw(15) << lastName[i] << setw(10) 
                                     << firstNameInitial[i] << setw(15) 
@@ -339,7 +333,12 @@ void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInit
                                     << membershipStatus[i] <<setw(15) << endl;
         }
     }
+
+    if(!resultsExist) {
+        cout << "No users found that have more than " << queryBorrowed << " books borrowed." << endl;
+    }
 }
+
 
 void printContentWithMembershipStatus(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[], string membershipStatus[]){
     for (int i = 0; i < rows; i++) {
@@ -384,12 +383,8 @@ void printContentWithMembershipStatus(int rows, string lastName[], char firstNam
                                     << booksBorrowed[i] << setw(10)
                                     << membershipStatus[i] <<setw(15) << endl;
         }
-    
-
-
-
-    
 }
+
 
 void generateReport(string fileName, int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
 
@@ -422,7 +417,8 @@ void generateReport(string fileName, int rows, string lastName[], string members
                                     << booksBorrowed[i] << setw(10)
                                     << membershipStatus[i] <<setw(15) << endl;
         }
-        cout << "The report was succesfully generated.";
+
+        cout << "\nA file named \"" << fileName << "\" was created and the report was succesfully generated.\n";
         writeFile.close();
     }
 }
@@ -438,6 +434,7 @@ void quitProgram(bool& continue_running){
         << "Exiting..." << endl;
 }
 
+
 string generateUnderline(int length){
     // Helper function used to generate a dashed outline of specific length
     string underline;
@@ -448,6 +445,3 @@ string generateUnderline(int length){
 
     return underline;
 }
-
-
-
