@@ -1,0 +1,17 @@
+Name           Initial   ID             Age       Books Borrowed      Membership Status        
+------------------------------------------------------------------------------------------
+Taylor         M         20211221       28        0                   Frequent Borrower
+Johnson        D         20201236       23        1                   Regular Member 
+Clark          J         20193476       21        1                   Regular Member 
+Harris         P         20211122       25        2                   Regular Member 
+Brown          F         20182456       38        2                   Regular Member 
+Lewis          R         20203456       34        2                   Regular Member 
+Wilson         K         20191234       22        3                   Frequent Borrower
+Smith          A         20203451       26        3                   Frequent Borrower
+Walker         S         20182345       33        3                   Frequent Borrower
+Martin         S         20201231       35        4                   Frequent Borrower
+Davis          G         20213467       20        4                   Frequent Borrower
+Anderson       L         20221234       43        5                   Frequent Borrower
+Lee            J         20223456       31        6                   Super Borrower 
+Wright         T         20183456       30        7                   Super Borrower 
+Miller         L         20174563       27        8                   Super Borrower 
