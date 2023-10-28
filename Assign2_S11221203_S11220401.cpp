@@ -41,7 +41,7 @@ int main(){
     const int CAPACITY = 100;
     
 
-    // Variable declerations
+    // Variable declarations
     int rows = 0;
     int menuOption;
     int firstMenuOption = 1;
@@ -112,10 +112,11 @@ cout << "+----------------------------------------------+\n"
 }
 
 
-//------------------------------------------------- Funtions -------------------------------------------------//
+//------------------------------------------------- Functions -------------------------------------------------//
 
 
-void appStartQuit(bool& continue_running){  // Function for starting/stopping app
+void appStartQuit(bool& continue_running){  
+    // Function for starting/stopping app
     char decision;
 
     cout << "\nEnter S to start or Q to exit: ";
@@ -171,7 +172,8 @@ void populateArrays(string fileName, int& rows, string lastName[], string member
 }
 
 
-void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {  // Function to determine membership status of members
+void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {  
+    // Function to determine membership status of members
     if(booksBorrowed >= 0 && booksBorrowed <= 2) {
         membershipStatus = "Regular Member";
     }
@@ -184,7 +186,8 @@ void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {  // F
 }
 
 
-int validateInt(int lowerLimit, int upperlimit){    // Function for integer validation
+int validateInt(int lowerLimit, int upperlimit){    
+    // Function for integer validation
     int input;
 
     cin >> input;
@@ -210,7 +213,8 @@ int validateInt(int lowerLimit, int upperlimit){    // Function for integer vali
 }
 
 
-int calculateAge(int birthYear) {   // Function to calculate age based off of birth year
+int calculateAge(int birthYear) {   
+    // Function to calculate age based off of birth year
     const int CURRENT_YEAR = 2023; 
     return CURRENT_YEAR - birthYear;    // returns age which is difference of current year and birth year
 }
@@ -241,6 +245,8 @@ void printContent(int rows, string lastName[], string membershipStatus[], char f
 }
 
 void sortContentByBooksBorrowed(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]){
+    // Function to sort data in ascending order according to number of books borrowed
+
     for (int i = 0; i < rows; i++) {
         int minElement = booksBorrowed[i], minIndex = i;
 
@@ -287,7 +293,7 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
 
 
 void printContentByYear(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]){
-    //Function that sorts and displays data from the array according to the year that the member was born in
+    // Function that sorts and displays data from the array according to the year that the member was born in
     
     int queryYear, minYear = 1970, maxYear = 2023;
     bool resultsExist = false;
@@ -413,7 +419,7 @@ void generateReport(string fileName, int rows, string lastName[], string members
                                       << generateUnderline(90) << endl;
 
 
-        // Write contents to  file
+        // Write contents to file
         for(int i = 0; i < rows; i++){
             int age = calculateAge(yearOfBirth[i]);
             assignMembershipStatus(membershipStatus[i], booksBorrowed[i]);
