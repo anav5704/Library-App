@@ -13,6 +13,7 @@
 #include<iostream>
 #include<fstream> // Used to read and write to files
 #include<iomanip> // Used to format the output using setw()
+
 using namespace std;
 
 
@@ -112,13 +113,13 @@ cout << "+----------------------------------------------+\n"
 //------------------------------------------------- Funtions -------------------------------------------------//
 
 
-void appStartQuit(bool& continue_running){
+void appStartQuit(bool& continue_running){  // Function for starting/stopping app
     char decision;
 
     cout << "\nEnter S to start or Q to exit: ";
     cin >> decision;
 
-    while (tolower(decision) != 's' && tolower(decision) != 'q'){
+    while (tolower(decision) != 's' && tolower(decision) != 'q'){   // Accomodating for error in input
         cin.clear();
         string dummy;
         getline(cin, dummy);
@@ -128,7 +129,7 @@ void appStartQuit(bool& continue_running){
         cin >> decision;
     }
 
-    switch (tolower(decision)){
+    switch (tolower(decision)){     // Switch statements for running/stopping the app
         case 's':
             continue_running = true;
             break;
@@ -141,6 +142,8 @@ void appStartQuit(bool& continue_running){
 
 
 void populateArrays(string fileName, int& rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
+    // Function to read file data and insert it into an array
+
     string headerOmit;
 
     ifstream readFile;
@@ -166,7 +169,7 @@ void populateArrays(string fileName, int& rows, string lastName[], string member
 }
 
 
-void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {
+void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {  // Function to determine membership status of members
     if(booksBorrowed >= 0 && booksBorrowed <= 2) {
         membershipStatus = "Regular Member";
     }
@@ -179,7 +182,7 @@ void assignMembershipStatus(string& membershipStatus, int booksBorrowed) {
 }
 
 
-int validateInt(int lowerLimit, int upperlimit){
+int validateInt(int lowerLimit, int upperlimit){    // Function for integer validation
     int input;
 
     cin >> input;
@@ -205,35 +208,39 @@ int validateInt(int lowerLimit, int upperlimit){
 }
 
 
-int calculateAge(int birthYear) {
+int calculateAge(int birthYear) {   // Function to calculate age based off of birth year
     const int CURRENT_YEAR = 2023; 
-    return CURRENT_YEAR - birthYear;
+    return CURRENT_YEAR - birthYear;    // returns age which is difference of current year and birth year
 }
 
 
 void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]) {
+    // Function to display the data in the array
+    
     cout << "Entire list of library members:" << endl << endl
         << left << setw(15) << "Name" << setw(10)
         << "Initial" << setw(15)
-        << "ID" << setw(25)
-        << "Age" << setw(10) 
-        << "Borrowed" << setw(10)
+        << "ID" << setw(10)
+        << "Age" << setw(15) 
+        << "Borrowed" << setw(25)
         << "Status" << endl
-        << generateUnderline(81) << endl;
+        << generateUnderline(82) << endl;
 
     for (int i = 0; i < rows; i++) {
         int age = calculateAge(yearOfBirth[i]);
         cout << left << setw(15) << lastName[i] << setw(10)
-            << firstNameInitial[i] << setw(25)
+            << firstNameInitial[i] << setw(15)
             << memberID[i] << setw(10)
-            << age << setw(10) 
-            << booksBorrowed[i] << setw(10)
+            << age << setw(15) 
+            << booksBorrowed[i] << setw(25)
             << membershipStatus[i] << endl;
     }
 }
 
 
 void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]){
+    // Function that sorts and displays data of the array in ascending order according to the number of books borrowed by members
+    
     for (int i = 0; i < rows; i++) {
         int minElement = booksBorrowed[i], minIndex = i;
 
@@ -273,6 +280,8 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
 
 
 void printContentByYear(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]){
+    //Function that sorts and displays data from the array according to the year that the member was born in
+    
     int queryYear, minYear = 1970, maxYear = 2023;
     bool resultsExist = false;
    
@@ -287,7 +296,7 @@ void printContentByYear(int rows, string lastName[], char firstNameInitial[], in
                         << generateUnderline(43) << endl;
 
     for (int i = 0; i < rows; i++) {
-        int age = calculateAge(yearOfBirth[i]);
+        int age = calculateAge(yearOfBirth[i]);    
         if(yearOfBirth[i] == queryYear){
             resultsExist = true;
             cout << left << setw(15) << lastName[i] << setw(10) 
@@ -297,13 +306,15 @@ void printContentByYear(int rows, string lastName[], char firstNameInitial[], in
         }
     }
 
-    if(!resultsExist) {
+    if(!resultsExist) {     // Fallback if no year corresponding to birth year is found
         cout << "No users found that match the birth year: " << queryYear << endl;
     }
 }
 
 
 void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[], string membershipStatus[]){
+    // Function that displays data from the array which are more than the number of borrowed books by members
+
     int queryBorrowed, minBorrowed = 1, maxBorrowed = 10;
     bool resultsExist = false;
     
@@ -334,13 +345,15 @@ void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInit
         }
     }
 
-    if(!resultsExist) {
+    if(!resultsExist) {     // Fallback if no users match the requirements
         cout << "No users found that have more than " << queryBorrowed << " books borrowed." << endl;
     }
 }
 
 
 void printContentWithMembershipStatus(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[], string membershipStatus[]){
+    // Function that sorts and displays data from the array in ascending order according to the number of books borrowed with membership status included
+
     for (int i = 0; i < rows; i++) {
         int minElement = booksBorrowed[i], minIndex = i;
 
@@ -387,6 +400,7 @@ void printContentWithMembershipStatus(int rows, string lastName[], char firstNam
 
 
 void generateReport(string fileName, int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]){
+    // Function that takes data from the app and writes to file, generating a report
 
     ofstream writeFile;
     writeFile.open(fileName);
@@ -400,10 +414,10 @@ void generateReport(string fileName, int rows, string lastName[], string members
         writeFile << left << setw(15) << "Name" << setw(10) 
                         << "Initial" << setw(15) 
                         << "ID" << setw(10) 
-                        << "Age" << setw(10) 
-                        << "BooksBorrowed" << setw(30) 
-                        << "MembershipStatus" << setw(20) << endl     
-                        << generateUnderline(95) << endl;
+                        << "Age" << setw(20) 
+                        << "Books Borrowed" << setw(25) 
+                        << "Membership Status" << setw(20) << endl     
+                        << generateUnderline(90) << endl;
 
 
         // Write contents to  file
@@ -413,9 +427,9 @@ void generateReport(string fileName, int rows, string lastName[], string members
             writeFile << left << setw(15) << lastName[i] << setw(10) 
                                     << firstNameInitial[i] << setw(15) 
                                     << memberID[i] << setw(10) 
-                                    << age << setw(10)
-                                    << booksBorrowed[i] << setw(10)
-                                    << membershipStatus[i] <<setw(15) << endl;
+                                    << age << setw(20)
+                                    << booksBorrowed[i] << setw(15)
+                                    << membershipStatus[i] <<setw(20) << endl;
         }
 
         cout << "\nA file named \"" << fileName << "\" was created and the report was succesfully generated.\n";
@@ -425,6 +439,8 @@ void generateReport(string fileName, int rows, string lastName[], string members
 
 
 void quitProgram(bool& continue_running){
+    // Function that ends the app with an exiting display message
+
     continue_running = false;
 
     cout << endl

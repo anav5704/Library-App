@@ -1,17 +1,17 @@
-Name           Initial   ID             Age       BooksBorrowedMembershipStatus              
------------------------------------------------------------------------------------------------
-Smith          A         20211221       28        3         Frequent Borrower
-Johnson        D         20201236       23        1         Regular Member
-Brown          F         20193476       21        2         Regular Member
-Davis          G         20211122       25        4         Frequent Borrower
-Lee            J         20182456       38        6         Super Borrower
-Taylor         M         20203456       34        0         Regular Member
-Wilson         K         20191234       22        3         Frequent Borrower
-Anderson       L         20203451       26        5         Frequent Borrower
-Harris         P         20182345       33        2         Regular Member
-Martin         S         20201231       35        4         Frequent Borrower
-Clark          J         20213467       20        1         Regular Member
-Wright         T         20221234       43        7         Super Borrower
-Miller         L         20223456       31        8         Super Borrower
-Lewis          R         20183456       30        2         Regular Member
-Walker         S         20174563       27        3         Frequent Borrower
+Name           Initial   ID             Age       Books Borrowed      Membership Status        
+------------------------------------------------------------------------------------------
+Smith          A         20211221       28        3                   Frequent Borrower
+Johnson        D         20201236       23        1                   Regular Member 
+Brown          F         20193476       21        2                   Regular Member 
+Davis          G         20211122       25        4                   Frequent Borrower
+Lee            J         20182456       38        6                   Super Borrower 
+Taylor         M         20203456       34        0                   Regular Member 
+Wilson         K         20191234       22        3                   Frequent Borrower
+Anderson       L         20203451       26        5                   Frequent Borrower
+Harris         P         20182345       33        2                   Regular Member 
+Martin         S         20201231       35        4                   Frequent Borrower
+Clark          J         20213467       20        1                   Regular Member 
+Wright         T         20221234       43        7                   Super Borrower 
+Miller         L         20223456       31        8                   Super Borrower 
+Lewis          R         20183456       30        2                   Regular Member 
+Walker         S         20174563       27        3                   Frequent Borrower
