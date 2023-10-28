@@ -13,6 +13,7 @@
 #include<iostream>
 #include<fstream> // Used to read and write to files
 #include<iomanip> // Used to format the output using setw()
+#include<string>  // Used for string data types
 
 using namespace std;
 
@@ -26,7 +27,8 @@ void populateArrays(string fileName, int& rows, string lastName[], string member
 int validateInt(int lowerLimit, int upperLimit);
 int calculateAge(int birthYear);
 void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]);
-void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]);
+void sortContentByBooksBorrowed(int rows, int booksBorrowed[], string lastName[], char firstNameInitial);
+void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[], int yearOfBirth[], string membershipStatus[]);
 void printContentByYear(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[]);
 void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[], string membershipStatus[]);
 void printContentWithMembershipStatus(int rows, string lastName[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[], string membershipStatus[]);
@@ -84,7 +86,7 @@ cout << "+----------------------------------------------+\n"
             printContent(rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
             break;
         case 2:
-            printSortedContent( rows, booksBorrowed, lastName, firstNameInitial);
+            printSortedContent( rows, booksBorrowed, lastName, firstNameInitial, yearOfBirth, membershipStatus);
             break;
         case 3:
             printContentByYear(rows, lastName, firstNameInitial, memberID, yearOfBirth);
@@ -96,7 +98,7 @@ cout << "+----------------------------------------------+\n"
             printContentWithMembershipStatus(rows, lastName, firstNameInitial, memberID, yearOfBirth, booksBorrowed, membershipStatus);
             break;
         case 6:
-            generateReport("LibraryMembersTest.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
+            generateReport("LibraryReports.txt", rows, lastName, membershipStatus, firstNameInitial, memberID, yearOfBirth, booksBorrowed);
             break;
         case 7:
             quitProgram(continue_running);
@@ -214,6 +216,7 @@ int calculateAge(int birthYear) {   // Function to calculate age based off of bi
 }
 
 
+
 void printContent(int rows, string lastName[], string membershipStatus[], char firstNameInitial[], int memberID[], int yearOfBirth[], int booksBorrowed[]) {
     // Function to display the data in the array
     
@@ -237,10 +240,7 @@ void printContent(int rows, string lastName[], string membershipStatus[], char f
     }
 }
 
-
-void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]){
-    // Function that sorts and displays data of the array in ascending order according to the number of books borrowed by members
-    
+void sortContentByBooksBorrowed(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[]){
     for (int i = 0; i < rows; i++) {
         int minElement = booksBorrowed[i], minIndex = i;
 
@@ -250,8 +250,7 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
                 minIndex = j;
             }
         }
-        
-        // Swap the smallest element with current iteration index
+            
         int tempBook = booksBorrowed[i];
         booksBorrowed[i] = minElement;
         booksBorrowed[minIndex] = tempBook;
@@ -264,6 +263,14 @@ void printSortedContent(int rows, int booksBorrowed[], string lastName[], char f
         lastName[i] = lastName[minIndex];
         lastName[minIndex] = tempLastName;
     }
+}
+
+
+
+void printSortedContent(int rows, int booksBorrowed[], string lastName[], char firstNameInitial[], int yearOfBirth[], string membershipStatus[]){
+    // Function that sorts and displays data of the array in ascending order according to the number of books borrowed by members
+    
+    sortContentByBooksBorrowed(rows, booksBorrowed, lastName, firstNameInitial);
 
     cout << "Sorted list of library members:" << endl << endl
     << left << setw(15) << "Name" << setw(10) 
@@ -321,6 +328,8 @@ void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInit
     cout << "Please enter the minimum number of borrowed books to filter the users by: ";
     queryBorrowed = validateInt(minBorrowed, maxBorrowed);
 
+    
+
     cout << "Entire list of library members:" << endl << endl
          << left << setw(15) << "Name" << setw(10) 
                         << "Initial" << setw(15) 
@@ -331,8 +340,11 @@ void printContentByBooksBorrowed(int rows, string lastName[], char firstNameInit
                         << generateUnderline(66) << endl;
 
     for (int i = 0; i < rows; i++) {
+            
         int age = calculateAge(yearOfBirth[i]);
         assignMembershipStatus(membershipStatus[i], booksBorrowed[i]);
+        sortContentByBooksBorrowed(rows, booksBorrowed, lastName, firstNameInitial);
+
         if (booksBorrowed [i] > queryBorrowed){
             resultsExist = true;
 
@@ -355,26 +367,7 @@ void printContentWithMembershipStatus(int rows, string lastName[], char firstNam
     // Function that sorts and displays data from the array in ascending order according to the number of books borrowed with membership status included
 
     for (int i = 0; i < rows; i++) {
-        int minElement = booksBorrowed[i], minIndex = i;
-
-        for ( int j = i; j < rows; j++) {
-            if (booksBorrowed[j] < minElement) {
-                minElement = booksBorrowed[j];
-                minIndex = j;
-            }
-        }
-        
-        int tempBook = booksBorrowed[i];
-        booksBorrowed[i] = minElement;
-        booksBorrowed[minIndex] = tempBook;
-
-        char tempFirstNameInitial = firstNameInitial[i];
-        firstNameInitial[i] = firstNameInitial[minIndex];
-        firstNameInitial[minIndex] = tempFirstNameInitial;
-
-        string tempLastName = lastName[i];
-        lastName[i] = lastName[minIndex];
-        lastName[minIndex] = tempLastName;
+        sortContentByBooksBorrowed(rows, booksBorrowed, lastName, firstNameInitial);
     }
 
     cout << "Entire list of library members:" << endl << endl
@@ -422,8 +415,9 @@ void generateReport(string fileName, int rows, string lastName[], string members
 
         // Write contents to  file
         for(int i = 0; i < rows; i++){
-           int age = calculateAge(yearOfBirth[i]);
+            int age = calculateAge(yearOfBirth[i]);
             assignMembershipStatus(membershipStatus[i], booksBorrowed[i]);
+            sortContentByBooksBorrowed(rows, booksBorrowed, lastName, firstNameInitial);
             writeFile << left << setw(15) << lastName[i] << setw(10) 
                                     << firstNameInitial[i] << setw(15) 
                                     << memberID[i] << setw(10) 
