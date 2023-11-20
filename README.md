@@ -17,7 +17,7 @@ g++ -o app.cpp Assign2_S11221203_S11220401.cpp
 ```
 Once successfully compiled, you can execute the output file using:
 ```
-.app.cpp 
+./app.cpp 
 ```
 
 
