@@ -13,7 +13,7 @@ The app is capable of:
 ## Getting Started
 First fork and clone the repo. Make sure you have the G++ compiler installed. Then, choose the program you want to run and compile it:
 ```
-g++ -o app.cpp <name_of_files(s)_you_want_to_run>
+g++ -o app.cpp Assign2_S11221203_S11220401.cpp 
 ```
 Once successfully compiled, you can execute the output file using:
 ```
