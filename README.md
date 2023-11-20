@@ -4,7 +4,7 @@ As part of our assignment, we have developed a CLI library management app. This 
 ## Functionalities
 The app is capable of:
 - Reading data from a file and adding this data to an array.
-- - Displaying the data read with the Last name, First name Initial, Member ID, Age, Books Borrowed, and Membership Status.
+- Displaying the data read with the Last name, First name Initial, Member ID, Age, Books Borrowed, and Membership Status.
 - Displaying the data read in ascending order according to the number of books borrowed.
  - Sorting and displaying the data read according to the birth year of the member.
  - Sorting and displaying data according to the number of books borrowed, and
