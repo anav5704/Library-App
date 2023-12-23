@@ -20,8 +20,9 @@ Once successfully compiled, you can execute the output file using:
 ./app.cpp 
 ```
 
+## Learning Resources
 
-
-
-
+- [C++ cheatsheet](https://www.codewithharry.com/blogpost/cpp-cheatsheet/)
+- [C++ roadmap](https://roadmap.sh/cpp)
+- [C++ docs](https://cplusplus.com/)
 
